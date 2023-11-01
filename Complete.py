@@ -1,10 +1,5 @@
-import datetime
-
-fecha_actual = datetime.date.today()
-
-print(fecha_actual.strftime("%d/%m/%Y"))
-
 import os
+
 
 def obtener_informacion_cliente():
     nombre = input("Ingresa tu nombre: ")
@@ -16,10 +11,12 @@ def obtener_informacion_cliente():
     print(f"--------BIENVENIDO {nombre.upper()} {apellido.upper()}--------")
     return nombre, apellido, dni, telefono, direccion
 
+
 def calcular_volumen_concreto(longitud, anchura, altura):
     # Calcula el volumen multiplicando las dimensiones
     volumen = longitud * anchura * altura
     return volumen
+
 
 def convertir_volumen(volumen, unidad_destino):
     if unidad_destino == "pies":
@@ -31,17 +28,25 @@ def convertir_volumen(volumen, unidad_destino):
     else:
         return "Unidad de destino no válida"
 
+
 def solicitar_conversion_volumen(volumen_concreto):
-    convertir = input("¿Desea convertir el volumen a pies o centímetros? (si/no): ").lower()
+    convertir = input(
+        "¿Desea convertir el volumen a pies o centímetros? (si/no): "
+    ).lower()
     if convertir == "si":
-        unidad_destino = input("¿A qué unidad desea convertir (pies/centimetros)? ").lower()
+        unidad_destino = input(
+            "¿A qué unidad desea convertir (pies/centimetros)? "
+        ).lower()
         resultado = convertir_volumen(volumen_concreto, unidad_destino)
-        print(f"Se necesitan {resultado:.2f} {unidad_destino} de hormigón, que equivalen a {volumen_concreto:.2f} metros cúbicos")
+        print(
+            f"Se necesitan {resultado:.2f} {unidad_destino} de hormigón, que equivalen a {volumen_concreto:.2f} metros cúbicos"
+        )
         return True
     return False
 
+
 def main():
-    print("Bienvenido a la Casa del Hormigon")
+    print("Bienvenido a la Calculadora de Concreto")
     nombre, apellido, dni, telefono, direccion = obtener_informacion_cliente()
 
     print("\nInformación del Cliente:")
@@ -59,17 +64,27 @@ def main():
     print(f"\nSe necesitan {volumen_concreto:.2f} metros cúbicos de hormigón.")
 
     if solicitar_conversion_volumen(volumen_concreto):
-        nueva_conversion = input("\n¿Desea convertir de nuevo a pies o centímetros? (si/no): ").lower()
+        nueva_conversion = input(
+            "\n¿Desea convertir de nuevo a pies o centímetros? (si/no): "
+        ).lower()
         if nueva_conversion == "si":
-            unidad_origen = input("¿A qué unidad desea convertir (pies/centimetros)? ").lower()
+            unidad_origen = input(
+                "¿A qué unidad desea convertir (pies/centimetros)? "
+            ).lower()
             resultado = convertir_volumen(volumen_concreto, unidad_origen)
-            print(f"Se necesitan {resultado:.2f} {unidad_origen} de hormigón que equivalen a {volumen_concreto:.2f} metros cúbicos")
+            print(
+                f"Se necesitan {resultado:.2f} {unidad_origen} de hormigón que equivalen a {volumen_concreto:.2f} metros cúbicos"
+            )
 
-    tipo_hormigon = input("\nIngrese el tipo de hormigón (normal, ligero o pesado): ").lower()
+    tipo_hormigon = input(
+        "\nIngrese el tipo de hormigón (normal, ligero o pesado): "
+    ).lower()
 
     while tipo_hormigon not in ["normal", "ligero", "pesado"]:
         print("El tipo de hormigón ingresado no es válido.")
-        tipo_hormigon = input("Ingrese el tipo de hormigón (normal, ligero o pesado): ").lower()
+        tipo_hormigon = input(
+            "Ingrese el tipo de hormigón (normal, ligero o pesado): "
+        ).lower()
 
     if tipo_hormigon == "normal":
         costo_hormigon = 100
@@ -83,17 +98,18 @@ def main():
 
     print(f"El costo del hormigón es de {costo_hormigon} dólares por metro cúbico.")
     print(f"El costo total del hormigón es de {costo_total:.2f} dólares.")
-
     # Crear el directorio "carpeta_clientes" y guardar la información del cliente
-    if not os.path.exists("carpeta_clientes"):
-        os.mkdir("carpeta_clientes")
+    # os.mkdir("carpeta_clientes")
+    os.chdir("carpeta_clientes")
+    nombre_fichero = "datos-clientes" + ".txt"
+    f = open(nombre_fichero, "w")
+    f.write(
+        str(
+            f" CLIENTE: {nombre.upper()} {apellido.upper()}\n DNI: {dni} TEL: {telefono} DIR: {direccion.upper()} \n CANT.HORMIGON REQ: {volumen_concreto:.2f} \n TOTAL COSTO: ${costo_total}"
+        )
+    )
+    f.close()
 
-    nombre_fichero = os.path.join("carpeta_clientes", "datos-clientes.txt")
-    with open(nombre_fichero, "w") as f:
-        f.write(f"CLIENTE: {nombre.upper()} {apellido.upper()}\nDNI: {dni}\nTEL: {telefono}\nDIR: {direccion.upper()}\nCANT.HORMIGON REQ: {volumen_concreto:.2f} metros cúbicos.\nCOSTO TOTAL: ${costo_total:.2f}")
-       
+
 if __name__ == "__main__":
     main()
-
-
-
