@@ -54,8 +54,15 @@ def main():
     print(f"DNI: {dni}")
     print(f"Teléfono: {telefono}")
     print(f"Dirección: {direccion}")
-
-    longitud = float(input("\nIngrese la longitud de la superficie (en metros): "))
+    while True:
+        try:
+            longitud = float(input("\nIngrese la longitud de la superficie (en metros): "))
+            if isinstance(longitud, (float, int)):
+                break
+            else:
+                print("Longitud inválida")
+        except ValueError as e:
+            print("Ha ocurrido un error: ", e)
     anchura = float(input("Ingrese la anchura de la superficie (en metros): "))
     altura = float(input("Ingrese la altura de la superficie (en metros): "))
 
